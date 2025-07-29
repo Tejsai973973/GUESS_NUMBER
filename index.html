@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Guess the Number 🎯</title>
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Rubik', sans-serif;
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transition: background-color 0.5s ease;
+    }
+
+    #game {
+      background: white;
+      padding: 40px 30px;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+      text-align: center;
+      max-width: 420px;
+      width: 100%;
+    }
+
+    h1 {
+      margin-top: 0;
+      font-size: 28px;
+      color: #333;
+    }
+
+    input[type="number"] {
+      padding: 10px;
+      width: 120px;
+      font-size: 16px;
+      border: 2px solid #ccc;
+      border-radius: 8px;
+      margin-top: 20px;
+    }
+
+    button {
+      padding: 10px 18px;
+      margin-top: 20px;
+      margin-left: 10px;
+      border: none;
+      border-radius: 8px;
+      background-color: #5c67f2;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    button:hover {
+      background-color: #3e4cc0;
+    }
+
+    .hint {
+      margin-top: 25px;
+      font-size: 1.2em;
+      font-weight: bold;
+    }
+
+    .hot {
+      color: #ff6f00;
+    }
+
+    .cold {
+      color: #007aff;
+    }
+
+    .right {
+      color: #28a745;
+    }
+
+    #restartBtn {
+      background-color: #ff4081;
+    }
+
+    #restartBtn:hover {
+      background-color: #d81b60;
+    }
+
+    #rules {
+      margin-bottom: 20px;
+      font-size: 0.95em;
+      color: #555;
+      line-height: 1.6;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      padding: 10px;
+      background-color: #f9f9f9;
+    }
+  </style>
+</head>
+<body>
+  <div id="game">
+    <h1>🎯 Guess the Number</h1>
+    <div id="rules">
+      <strong>Rules:</strong><br>
+      - I picked a number between <strong>1</strong> and <strong>100</strong>.<br>
+      - 🔥 <strong>Hot</strong>: Your guess is close (within ±10)<br>
+      - 🥶 <strong>Cold</strong>: Your guess is far (more than ±10)<br>
+      - ✅ <strong>Right</strong>: You guessed the correct number!
+    </div>
+    <input type="number" id="guessInput" min="1" max="100" placeholder="Your guess" />
+    <button onclick="checkGuess()">Guess</button>
+    <div class="hint" id="hintText"></div>
+    <div class="hint" id="attemptsText"></div>
+    <button id="restartBtn" onclick="restartGame()">Restart 🔁</button>
+  </div>
+
+  <script>
+    let secretNumber;
+    let attempts;
+
+    function setBackground(type) {
+      if (type === "cold") {
+        document.body.style.background = "#66a6ff"; // Blue
+      } else if (type === "hot") {
+        document.body.style.background = "#ffb347"; // Orange
+      } else if (type === "right") {
+        document.body.style.background = "#7ed957"; // Green
+      } else {
+        document.body.style.background = "linear-gradient(135deg, #89f7fe 0%, #66a6ff 100%)";
+      }
+    }
+
+    function generateNumber() {
+      secretNumber = Math.floor(Math.random() * 100) + 1;
+      attempts = 0;
+      document.getElementById("hintText").textContent = "";
+      document.getElementById("hintText").className = "hint";
+      document.getElementById("attemptsText").textContent = "";
+      document.getElementById("guessInput").value = "";
+      setBackground("default");
+    }
+
+    function giveHint(number, guess) {
+      if (guess === number) return "right";
+      else if (Math.abs(guess - number) > 10) return "cold";
+      else return "hot";
+    }
+
+    function checkGuess() {
+      const input = document.getElementById("guessInput");
+      const guess = parseInt(input.value);
+
+      if (isNaN(guess) || guess < 1 || guess > 100) {
+        alert("Please enter a number between 1 and 100.");
+        return;
+      }
+
+      attempts++;
+      const hintType = giveHint(secretNumber, guess);
+      const hintText = document.getElementById("hintText");
+      const attemptsText = document.getElementById("attemptsText");
+
+      if (hintType === "right") {
+        hintText.textContent = "🎉 You got it right!";
+        hintText.className = "hint right";
+        attemptsText.textContent = `You guessed it in ${attempts} attempts.`;
+      } else if (hintType === "hot") {
+        hintText.textContent = "🔥 Hot!";
+        hintText.className = "hint hot";
+        attemptsText.textContent = `Attempts: ${attempts}`;
+      } else {
+        hintText.textContent = "🥶 Cold!";
+        hintText.className = "hint cold";
+        attemptsText.textContent = `Attempts: ${attempts}`;
+      }
+
+      setBackground(hintType);
+    }
+
+    function restartGame() {
+      generateNumber();
+    }
+
+    generateNumber();
+  </script>
+</body>
+</html>
