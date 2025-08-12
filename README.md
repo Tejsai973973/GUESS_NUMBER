@@ -16,13 +16,13 @@ Get hints after each guess — **Hot**, **Cold**, or **Right** — with matching
 5. Click **Restart 🔁** to start a new round anytime.
 
 ## Features
-- 🎲 New random number each game
-- 🎨 Dynamic hints with color-coded feedback
-- 📊 Attempts counter to track your progress
-- 📱 Clean, mobile-friendly design
+- New random number each game
+- Dynamic hints with color-coded feedback
+- Attempts counter to track your progress
+- Clean, mobile-friendly design
 
 ## Run Locally (Optional)
 1. Download the `index.html` file from this repository.
-2. Open it in any modern web browser.
+2. Open it in any web browser.
 3. Play and enjoy!
 
